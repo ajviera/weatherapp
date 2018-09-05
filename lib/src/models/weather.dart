@@ -1,16 +1,17 @@
 part of weatherapp;
 
 class Weather {
-  double lat;
-  double lgn;
-  String description;
-  String icon;
-  double temp;
-  int humidity;
-  int tempMin;
-  int tempMax;
-  int visibility;
-  double windSpeed;
+  var lat;
+  var lgn;
+  var description;
+  var icon;
+  var temp;
+  var humidity;
+  var tempMin;
+  var tempMax;
+  var visibility;
+  var windSpeed;
+  var date;
   // sunrise;
   // sunset;
 
@@ -25,6 +26,7 @@ class Weather {
     this.tempMax,
     this.visibility,
     this.windSpeed,
+    this.date,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) {

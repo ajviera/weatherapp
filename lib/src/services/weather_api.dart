@@ -31,7 +31,16 @@ class WeatherApi {
 
   _getList(List responseList) {
     return responseList.map<Weather>((weather) {
-      return Weather(temp: weather['main']['temp']);
+      return Weather(
+        temp: weather['main']['temp'],
+        date: weather['dt_txt'],
+        windSpeed: weather['wind']['speed'],
+        description: weather['weather'][0]['description'],
+        icon: weather['weather'][0]['icon'],
+        humidity: weather['weather'][0]['humidity'],
+        tempMax: weather['weather'][0]['temp_max'],
+        tempMin: weather['weather'][0]['temp_min'],
+      );
     }).toList();
   }
 }

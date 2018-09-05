@@ -22,34 +22,55 @@ class _HomePageState extends State<HomePage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             body: Container(
-              padding: const EdgeInsets.only(left: 30.0, right: 30.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   FutureBuilder<Weather>(
                     future: WeatherApi().getCurrentWeather(),
-                    builder: (context, snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return weatherWidget(snapshot);
                       } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
+                        return Center(
+                          child: Container(
+                            padding: EdgeInsets.only(top: 200.0),
+                            child: Text("${snapshot.error}"),
+                          ),
+                        );
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return Center(
+                        child: Container(
+                          padding: EdgeInsets.only(top: 200.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
                     },
                   ),
-                  // Container(
-                  //   padding: const EdgeInsets.only(top: 150.0),
-                  //   child: FutureBuilder<List<Weather>>(
-                  //     future: WeatherApi().getNextWeather(),
-                  //     builder: (context, snapshot) {
-                  //       if (snapshot.hasData) {
-                  //         return listOfWeatherWidget(snapshot.data);
-                  //       } else if (snapshot.hasError) {
-                  //         return Center(child: Text("${snapshot.error}"));
-                  //       }
-                  //       return Center(child: CircularProgressIndicator());
-                  //     },
-                  //   ),
-                  // ),
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 60.0),
+                    child: FutureBuilder<List<Weather>>(
+                      future: WeatherApi().getNextWeather(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return listOfWeatherWidget(snapshot);
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Container(
+                              padding: EdgeInsets.only(bottom: 150.0),
+                              child: Text("${snapshot.error}"),
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 150.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -59,13 +80,74 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget listOfWeatherWidget(List<Weather> data) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: data.length == null ? 0 : data,
-      itemBuilder: (context, i) {
-        Text(data[i].temp.toString());
-      },
+  Widget listOfWeatherWidget(AsyncSnapshot snapshot) {
+    List<Weather> data = snapshot.data;
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20.0),
+      height: 200.0,
+      child: ListView.builder(
+        addRepaintBoundaries: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(25.0),
+              ),
+            ),
+            elevation: 8.0,
+            color: Colors.blue.shade300,
+            child: SizedBox(
+              height: 100.0,
+              width: 200.0,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${DateFormat.yMd().format(DateTime.parse(data[index].date))}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      '${DateFormat.Hm().format(DateTime.parse(data[index].date))}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          data[index].temp.round().toString() + 'º',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35.0,
+                          ),
+                        ),
+                        Container(
+                          child: Image.network(
+                            'http://openweathermap.org/img/w/${data[index].icon}.png',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -81,7 +163,7 @@ class _HomePageState extends State<HomePage> {
   Widget weatherWidget(AsyncSnapshot<Weather> snapshot) {
     return Center(
       child: Container(
-        padding: EdgeInsets.only(top: 150.0),
+        padding: EdgeInsets.only(top: 180.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
