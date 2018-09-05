@@ -11,7 +11,7 @@ class WeatherApi {
     if (response.statusCode == 200) {
       return Weather.fromJson(json.decode(response.body));
     } else {
-      throw Exception('No se pudo obtener el Clima');
+      throw Exception('No se pudo obtener la información');
     }
   }
 
@@ -24,7 +24,7 @@ class WeatherApi {
       Map responseList = json.decode(response.body);
       weathers.addAll(_getList(responseList['list']));
     } else {
-      throw Exception('No se pudo obtener el Clima');
+      throw Exception('No se pudo obtener la información');
     }
     return weathers;
   }

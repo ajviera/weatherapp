@@ -6,6 +6,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _nextWeatherCall;
+  var _currentWeatherCall;
+  var _timeNow;
+  var _backgroundImage;
+  var _isBlocked;
+
+  @override
+  void initState() {
+    super.initState();
+    _isBlocked = false;
+    _initializeInfo();
+  }
+
+  void _blockButton() {
+    setState(() {
+      _isBlocked = false;
+    });
+  }
+
+  void _initializeInfo() {
+    setState(() {
+      _backgroundImage = _selectImage();
+      _timeNow = DateTime.now();
+      _currentWeatherCall = WeatherApi().getCurrentWeather();
+      _nextWeatherCall = WeatherApi().getNextWeather();
+    });
+  }
+
+  void _refreshWeatherInfo() {
+    _initializeInfo();
+    setState(() {
+      _isBlocked = true;
+    });
+    Timer(const Duration(seconds: 60), () => _blockButton());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: _selectImage(),
+                image: _backgroundImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -25,58 +61,73 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  FutureBuilder<Weather>(
-                    future: WeatherApi().getCurrentWeather(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        return weatherWidget(snapshot);
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Container(
-                            padding: EdgeInsets.only(top: 200.0),
-                            child: Text("${snapshot.error}"),
-                          ),
-                        );
-                      }
-                      return Center(
-                        child: Container(
-                          padding: EdgeInsets.only(top: 200.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    },
-                  ),
+                  buildCurrentWeather(),
                   Expanded(child: Container()),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 60.0),
-                    child: FutureBuilder<List<Weather>>(
-                      future: WeatherApi().getNextWeather(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return listOfWeatherWidget(snapshot);
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: 150.0),
-                              child: Text("${snapshot.error}"),
-                            ),
-                          );
-                        }
-                        return Center(
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: 150.0),
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  buildNextWeather(),
                 ],
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              elevation: 15.0,
+              backgroundColor: Color(0xFFE57373),
+              child: Icon(Icons.refresh),
+              onPressed: _isBlocked ? () => {} : () => _refreshWeatherInfo(),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Padding buildNextWeather() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 60.0),
+      child: FutureBuilder<List<Weather>>(
+        future: _nextWeatherCall,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return listOfWeatherWidget(snapshot);
+          } else if (snapshot.hasError) {
+            return Text('');
+          }
+          return Center(
+            child: Container(
+              padding: EdgeInsets.only(bottom: 150.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  FutureBuilder<Weather> buildCurrentWeather() {
+    return FutureBuilder<Weather>(
+      future: _currentWeatherCall,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return weatherWidget(snapshot);
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Container(
+              padding: EdgeInsets.only(top: 200.0),
+              child: Text(
+                'No se pudo obtener la información',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          );
+        }
+        return Center(
+          child: Container(
+            padding: EdgeInsets.only(top: 200.0),
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 
@@ -101,7 +152,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.blue.shade300,
             child: SizedBox(
               height: 100.0,
-              width: 200.0,
+              width: 180.0,
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -176,7 +227,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Text(
-              '${DateFormat.Hm().format(DateTime.now())}',
+              '${DateFormat.Hm().format(_timeNow)}',
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.white,
