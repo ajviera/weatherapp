@@ -10,19 +10,13 @@ class _HomePageState extends State<HomePage> {
   var _currentWeatherCall;
   var _timeNow;
   var _backgroundImage;
-  var _isBlocked;
+  bool _isBlocked;
 
   @override
   void initState() {
     super.initState();
     _isBlocked = false;
     _initializeInfo();
-  }
-
-  void _blockButton() {
-    setState(() {
-      _isBlocked = false;
-    });
   }
 
   void _initializeInfo() {
@@ -39,7 +33,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isBlocked = true;
     });
-    Timer(const Duration(seconds: 60), () => _blockButton());
+    Timer(Duration(seconds: 60), () {
+      setState(() {
+        _isBlocked = false;
+      });
+    });
   }
 
   @override
@@ -69,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             ),
             floatingActionButton: FloatingActionButton(
               elevation: 15.0,
-              backgroundColor: Color(0xFFE57373),
+              backgroundColor: _isBlocked ? Colors.grey : Color(0xFFE57373),
               child: Icon(Icons.refresh),
               onPressed: _isBlocked ? () => {} : () => _refreshWeatherInfo(),
             ),
