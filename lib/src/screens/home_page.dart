@@ -6,6 +6,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _controller = PageController();
   var _nextWeatherCall;
   var _currentWeatherCall;
   var _timeNow;
@@ -135,68 +136,25 @@ class _HomePageState extends State<HomePage> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       height: 200.0,
-      child: ListView.builder(
-        addRepaintBoundaries: true,
-        scrollDirection: Axis.horizontal,
+      child: PageView.builder(
+        scrollDirection: Axis.vertical,
+        controller: _controller,
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25.0),
-              ),
-            ),
-            elevation: 8.0,
-            color: Colors.blue.shade300,
-            child: SizedBox(
-              height: 100.0,
-              width: 180.0,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      '${DateFormat.yMd().format(DateTime.parse(data[index].date))}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    Text(
-                      '${DateFormat.Hm().format(DateTime.parse(data[index].date))}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          data[index].temp.round().toString() + 'º',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35.0,
-                          ),
-                        ),
-                        Container(
-                          child: Image.network(
-                            'http://openweathermap.org/img/w/${data[index].icon}.png',
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          return _WeatherCard(
+            data: data,
+            index: index,
           );
         },
       ),
+      // child: ListView.builder(
+      //   addRepaintBoundaries: true,
+      //   scrollDirection: Axis.horizontal,
+      //   itemCount: data.length,
+      //   itemBuilder: (BuildContext context, int index) {
+      //     return _WeatherCard(data: data);
+      //   },
+      // ),
     );
   }
 
@@ -251,6 +209,76 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WeatherCard extends StatelessWidget {
+  const _WeatherCard({
+    Key key,
+    @required this.data,
+    @required this.index,
+  }) : super(key: key);
+
+  final int index;
+  final List<Weather> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(25.0),
+        ),
+      ),
+      elevation: 8.0,
+      color: Colors.blue.shade300,
+      child: SizedBox(
+        height: 100.0,
+        width: 180.0,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '${DateFormat.yMd().format(DateTime.parse(data[index].date))}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              Text(
+                '${DateFormat.Hm().format(DateTime.parse(data[index].date))}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    data[index].temp.round().toString() + 'º',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35.0,
+                    ),
+                  ),
+                  Container(
+                    child: Image.network(
+                      'http://openweathermap.org/img/w/${data[index].icon}.png',
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
