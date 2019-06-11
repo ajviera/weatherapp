@@ -1,4 +1,4 @@
-import 'package:WeatherApp/src/app.dart';
+import 'package:weather_app/src/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

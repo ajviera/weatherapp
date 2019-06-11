@@ -1,11 +1,16 @@
-part of weatherapp;
+import 'dart:convert';
+
+import 'package:weather_app/src/common/config.dart';
+import 'package:weather_app/src/models/weather.dart';
+import 'package:http/http.dart' as http;
 
 class WeatherApi {
-  String _openWeatherMap = Keys.openWeatherMap;
+  String baseUrl = 'https://api.openweathermap.org/data/2.5/';
+  String query =
+      '?q=Buenos Aires,ar&units=metric&lang=es&appid=${Config.openWeatherMapKey}';
 
   Future<Weather> getCurrentWeather() async {
-    final apiUrl =
-        'https://api.openweathermap.org/data/2.5/weather?q=Buenos Aires,ar&units=metric&lang=es&appid=$_openWeatherMap';
+    final apiUrl = baseUrl + 'weather' + query;
     final response = await http.get(apiUrl);
 
     if (response.statusCode == 200) {
@@ -16,8 +21,7 @@ class WeatherApi {
   }
 
   Future<List<Weather>> getNextWeather() async {
-    final apiUrl =
-        'https://api.openweathermap.org/data/2.5/forecast?q=Buenos Aires,ar&units=metric&lang=es&appid=$_openWeatherMap';
+    final apiUrl = baseUrl + 'forecast' + query;
     final response = await http.get(apiUrl);
     List<Weather> weathers = List<Weather>();
     if (response.statusCode == 200) {

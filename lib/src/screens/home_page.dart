@@ -1,4 +1,11 @@
-part of weatherapp;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:weather_app/src/common/ui.dart';
+import 'package:weather_app/src/models/weather.dart';
+import 'package:weather_app/src/services/weather_api.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,9 +21,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
+    initializeDateFormatting("es_AR", null);
     _isBlocked = false;
     _initializeInfo();
+    super.initState();
   }
 
   void _initializeInfo() {
@@ -30,13 +38,9 @@ class _HomePageState extends State<HomePage> {
 
   void _refreshWeatherInfo() {
     _initializeInfo();
-    setState(() {
-      _isBlocked = true;
-    });
+    setState(() => _isBlocked = true);
     Timer(Duration(seconds: 60), () {
-      setState(() {
-        _isBlocked = false;
-      });
+      setState(() => _isBlocked = false);
     });
   }
 
@@ -69,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               elevation: 15.0,
               backgroundColor: _isBlocked ? Colors.grey : Color(0xFFE57373),
               child: Icon(Icons.refresh),
-              onPressed: _isBlocked ? () => {} : () => _refreshWeatherInfo(),
+              onPressed: _isBlocked ? null : () => _refreshWeatherInfo(),
             ),
           ),
         ],
@@ -111,10 +115,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(top: 200.0),
               child: Text(
                 'No se pudo obtener la información',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
             ),
           );
@@ -142,9 +143,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (BuildContext context, int index) {
           return Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25.0),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(25.0)),
             ),
             elevation: 8.0,
             color: Colors.blue.shade300,

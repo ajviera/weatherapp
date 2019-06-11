@@ -1,4 +1,4 @@
-part of weatherapp;
+import 'package:flutter/material.dart';
 
 class Ui {
   static final primaryColor = Colors.white;

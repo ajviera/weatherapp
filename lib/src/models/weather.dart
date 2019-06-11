@@ -1,5 +1,3 @@
-part of weatherapp;
-
 class Weather {
   var lat;
   var lgn;
