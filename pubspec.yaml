@@ -11,6 +11,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   intl: ^0.15.7
   http: ^0.12.0+2
+  provider: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:
@@ -18,7 +19,29 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: FredokaOne
+      fonts:
+      - asset: assets/fonts/FredokaOne-Regular.ttf
+    - family: Noir
+      fonts:
+      - asset: assets/fonts/Noir_regular.otf
+
   assets:
-    - assets/images/buenos-aires-1.jpg
-    - assets/images/after_noon.png
-    - assets/images/night.png
+    - assets/images/background.png
+    - assets/images/clear_night_city.gif
+    - assets/images/clear_night_mountain.gif
+    - assets/images/clear_night_ocean.gif
+    - assets/images/rainy_day_city.gif
+    - assets/images/rainy_day_mountain.gif
+    - assets/images/rainy_day_ocean.gif
+    - assets/images/rainy_night_city.gif
+    - assets/images/rainy_night_lighthouse.gif
+    - assets/images/snowy_day_city.gif
+    - assets/images/snowy_day_mountain.gif
+    - assets/images/sunny_afternoon_city.gif
+    - assets/images/sunny_afternoon_mountain.gif
+    - assets/images/sunny_afternoon_ocean.gif
+    - assets/images/sunny_day_city.gif
+    - assets/images/sunny_day_mountain.gif

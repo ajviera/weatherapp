@@ -1,7 +1,8 @@
 class Weather {
   var lat;
   var lgn;
-  var description;
+  String description;
+  String main;
   var icon;
   var temp;
   var humidity;
@@ -17,6 +18,7 @@ class Weather {
     this.lat,
     this.lgn,
     this.description,
+    this.main,
     this.icon,
     this.temp,
     this.humidity,
@@ -32,6 +34,7 @@ class Weather {
       lat: json['coord']['lat'],
       lgn: json['coord']['lon'],
       description: json['weather'][0]['description'],
+      main: json['weather'][0]['main'],
       icon: json['weather'][0]['icon'],
       temp: json['main']['temp'],
       humidity: json['main']['humidity'],

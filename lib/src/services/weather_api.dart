@@ -16,7 +16,7 @@ class WeatherApi {
     if (response.statusCode == 200) {
       return Weather.fromJson(json.decode(response.body));
     } else {
-      throw Exception('No se pudo obtener la información');
+      return null;
     }
   }
 
@@ -28,7 +28,7 @@ class WeatherApi {
       Map responseList = json.decode(response.body);
       weathers.addAll(_getList(responseList['list']));
     } else {
-      throw Exception('No se pudo obtener la información');
+      return null;
     }
     return weathers;
   }
@@ -40,6 +40,7 @@ class WeatherApi {
         date: weather['dt_txt'],
         windSpeed: weather['wind']['speed'],
         description: weather['weather'][0]['description'],
+        main: weather['weather'][0]['main'],
         icon: weather['weather'][0]['icon'],
         humidity: weather['weather'][0]['humidity'],
         tempMax: weather['weather'][0]['temp_max'],
