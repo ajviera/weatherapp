@@ -7,15 +7,14 @@ import 'package:weather_app/src/providers/app_change_notifier.dart';
 import 'package:weather_app/src/services/weather_api.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:weather_app/src/themes/ui.dart';
 import 'package:weather_app/src/widgets/color_loader_popup.dart';
 
-class HomePage extends StatefulWidget {
+class WeatherPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _WeatherPageState createState() => _WeatherPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _WeatherPageState extends State<WeatherPage> {
   List<Weather> _nextWeather;
   Weather _currentWeather;
   DateTime _timeNow;
@@ -225,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                       _currentWeather.temp.round().toString() + 'º',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 35.0,
+                        fontSize: 55.0,
                       ),
                     ),
                   ),

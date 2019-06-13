@@ -16,7 +16,7 @@ class WeatherApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Weather App',
         theme: ThemeData(fontFamily: 'Noir'),
-        home: HomePage(),
+        home: WeatherPage(),
       ),
     );
   }
