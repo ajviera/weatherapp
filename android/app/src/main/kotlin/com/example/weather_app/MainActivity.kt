@@ -1,4 +1,4 @@
-package com.example.weather_app
+package com.ariel.weatherApp
 
 import android.os.Bundle
 
