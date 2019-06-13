@@ -21,8 +21,6 @@ class Ui {
       AssetImage('assets/images/sunny_day_mountain.gif');
 
 // NIGHT
-  static final rainyNightCityBackground =
-      AssetImage('assets/images/rainy_night_city.gif');
   static final rainyNightLighthouseBackground =
       AssetImage('assets/images/rainy_night_lighthouse.gif');
   static final clearNightCityBackground =

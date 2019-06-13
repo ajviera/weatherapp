@@ -77,7 +77,7 @@ class AppGeneralNotifier with ChangeNotifier {
 
   AssetImage _rainWeather(timeOfTheDat) {
     if (timeOfTheDat == 'day') {
-      return Ui.rainyNightCityBackground;
+      return Ui.rainyNightLighthouseBackground;
     } else {
       return Ui.rainyNightLighthouseBackground;
     }
@@ -93,7 +93,7 @@ class AppGeneralNotifier with ChangeNotifier {
 
   AssetImage _thunderstormWeather(timeOfTheDat) {
     if (timeOfTheDat == 'day') {
-      return Ui.rainyNightCityBackground;
+      return Ui.rainyNightLighthouseBackground;
     } else {
       return Ui.rainyNightLighthouseBackground;
     }

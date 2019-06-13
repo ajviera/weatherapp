@@ -65,12 +65,13 @@ class _WeatherPageState extends State<WeatherPage> {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Provider.of<AppGeneralNotifier>(context)
-                    .getBackgroundImage(),
-                fit: BoxFit.cover,
-              ),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Image(
+              image:
+                  Provider.of<AppGeneralNotifier>(context).getBackgroundImage(),
+              // gaplessPlayback: true,
+              fit: BoxFit.cover,
             ),
           ),
           _isLoading ? ColorLoaderPopup() : _body(),
